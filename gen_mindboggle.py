@@ -8,7 +8,6 @@ import vtk
 import numpy as np
 from vtk.numpy_interface import dataset_adapter as dsa
 from torch_geometric.data import Data
-from embed.SpectralEmbedding.embedding import Embedding
 from torch_geometric.transforms import FaceToEdge
 
 # with zipfile.ZipFile('mindboggle/lh.zip', 'r') as existing_zip:

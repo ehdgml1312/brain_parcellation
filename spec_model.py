@@ -22,13 +22,6 @@ class spec_ln(torch.nn.Module):
         self.conv1 = EdgeConv(nn.Linear(2*64, hidden_channels[0]))
         self.conv2 = EdgeConv(nn.Linear(2*192, hidden_channels[1]))
         self.conv3 = EdgeConv(nn.Linear(2*384, hidden_channels[2]))
-#         self.conv1 = nn.Linear(64, hidden_channels[0])
-#         self.conv2 =nn.Linear(192, hidden_channels[1])
-#         self.conv3 = nn.Linear(384, hidden_channels[2])
-
-#         self.conv1 = GCNConv(hidden_channels[0], hidden_channels[0])
-#         self.conv2 = GCNConv(hidden_channels[0]+hidden_channels[0], hidden_channels[1])
-#         self.conv3 = GCNConv(hidden_channels[0]+hidden_channels[0]+hidden_channels[1], hidden_channels[2])
 
         self.conv5 = EdgeConv(nn.Linear(2*64, hidden_channels[0]))
         self.conv6 = EdgeConv(nn.Linear(2*(64+hidden_channels[0]), hidden_channels[1]))
@@ -39,13 +32,7 @@ class spec_ln(torch.nn.Module):
         self.conv6 = EdgeConv(nn.Linear(2*192, hidden_channels[1]))
         self.conv7 = EdgeConv(nn.Linear(2*384, hidden_channels[2]))
         self.conv8 = EdgeConv(nn.Linear(2*640, hidden_channels[3]))
-#         self.conv5 = GCNConv(hidden_channels[0], hidden_channels[0])
-#         self.conv6 = GCNConv(hidden_channels[0]+hidden_channels[0], hidden_channels[1])
-#         self.conv7 = GCNConv(hidden_channels[0]+hidden_channels[0]+hidden_channels[1], hidden_channels[2])
-#         self.conv8 = GCNConv(hidden_channels[0]+hidden_channels[0]+hidden_channels[1]+hidden_channels[2], hidden_channels[3])
 
-
-#         self.decode1 = nn.Linear(hidden_channels[0]+sum(hidden_channels), 64)
         self.decode1 = nn.Linear(5*64+4*hidden_channels[0]+3*hidden_channels[1]+2*hidden_channels[2]+hidden_channels[3], 64)
         self.decode2 = nn.Linear(64,32)
 
@@ -59,7 +46,6 @@ class spec_ln(torch.nn.Module):
         x0 = self.ln(F.leaky_relu(self.spatial_encode2(self.ln(F.leaky_relu(self.spatial_encode1(x0))))))
 
         s1 = self.conv1(s0, spec_edge)
-#         s1 = self.conv1(s0)
         x1 = self.conv5(x0, edge_index)
 
         s1 = self.ln(F.leaky_relu(s1))
@@ -72,7 +58,6 @@ class spec_ln(torch.nn.Module):
         s2 = torch.cat([s0,s1],1)
         x2 = torch.cat([x0,x1],1)
         s2 = self.conv2(s2, spec_edge)
-#         s2 = self.conv2(s2)
         x2 = self.conv6(x2, edge_index)
         s2 = self.ln(F.leaky_relu(s2))
         x2 = self.ln(F.leaky_relu(x2))
@@ -83,7 +68,6 @@ class spec_ln(torch.nn.Module):
         s3 = torch.cat([s0,s1,s2],1)
         x3 = torch.cat([x0,x1,x2],1)
         s3 = self.conv3(s3, spec_edge)
-#         s3 = self.conv3(s3)    
         x3 = self.conv7(x3, edge_index)
         s3 = self.ln(F.leaky_relu(s3))
         x3 = self.ln(F.leaky_relu(x3))
@@ -227,7 +211,6 @@ class spec_ln_msg(torch.nn.Module):
         self.conv1 = GATEdge(64, 8,8)
         self.conv2 = GATEdge(192, 8,8)
         self.conv3 = GATEdge(384, 8,8)
-#
         
         self.conv5 = GATEdge(64, 8,8)
         self.conv6 = GATEdge(192, 8,8)
@@ -248,7 +231,6 @@ class spec_ln_msg(torch.nn.Module):
         x0 = self.ln(F.leaky_relu(self.spatial_encode2(self.ln(F.leaky_relu(self.spatial_encode1(x0))))))
 
         s1 = self.conv1(s0, spec_edge)
-#         s1 = self.conv1(s0)
         x1 = self.conv5(x0, edge_index)
 
         s1 = self.ln(F.leaky_relu(s1))
@@ -261,7 +243,6 @@ class spec_ln_msg(torch.nn.Module):
         s2 = torch.cat([s0,s1],1)
         x2 = torch.cat([x0,x1],1)
         s2 = self.conv2(s2, spec_edge)
-#         s2 = self.conv2(s2)
         x2 = self.conv6(x2, edge_index)
         s2 = self.ln(F.leaky_relu(s2))
         x2 = self.ln(F.leaky_relu(x2))
@@ -272,7 +253,6 @@ class spec_ln_msg(torch.nn.Module):
         s3 = torch.cat([s0,s1,s2],1)
         x3 = torch.cat([x0,x1,x2],1)
         s3 = self.conv3(s3, spec_edge)
-#         s3 = self.conv3(s3)    
         x3 = self.conv7(x3, edge_index)
         s3 = self.ln(F.leaky_relu(s3))
         x3 = self.ln(F.leaky_relu(x3))
