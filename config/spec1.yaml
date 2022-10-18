@@ -1,0 +1,12 @@
+---
+exp_name: specln
+num_exp: 5
+save_dir: exp_spectral_edge_gat
+
+data : eig_unnorm
+model : spec_ln_msg
+K : 64
+in_channels: 7
+hidden_channels: [64,64,64,64]
+num_classes: 32
+
